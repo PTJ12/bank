@@ -1,13 +1,14 @@
 package org.example.bank;
 
 import cn.hutool.core.util.XmlUtil;
-import lombok.extern.slf4j.Slf4j;
 import org.example.pojo.dto.AccountDetailsDto;
 import org.example.pojo.entity.AccountDetails;
+import org.example.pojo.entity.BankRecord;
 import org.example.pojo.entity.BulkPay;
 import org.w3c.dom.Document;
 
 import javax.xml.xpath.XPathConstants;
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -109,6 +110,31 @@ public class BankParam {
         return accountDetailsDto;
     }
 
+    public BankRecord accountDetailsDtoToBankRecord(AccountDetailsDto accountDetailsDto){
+        BankRecord bankRecord = new BankRecord();
+        bankRecord.setMutualAccount(accountDetailsDto.getAcno());
+        bankRecord.setTransactionDate(accountDetailsDto.getTr_acdt());
+        bankRecord.setTransactionDateTime(new Date(accountDetailsDto.getTr_time()));
+//        bankRecord.setTransactionTime();
+        bankRecord.setCurrency(accountDetailsDto.getCur_code());
+        bankRecord.setAccountingFlow(accountDetailsDto.getOld_serial_no());
+//        bankRecord.setBorrowingMark()
+        bankRecord.setTransactionAmount(BigDecimal.valueOf(Long.parseLong(accountDetailsDto.getAmt())));
+        bankRecord.setOppositeAccount(accountDetailsDto.getOpp_acno());
+        bankRecord.setOppositeAccountName(accountDetailsDto.getOpp_acname());
+        bankRecord.setOppositeBank(accountDetailsDto.getOpp_bankname());
+        bankRecord.setAccountBalance(BigDecimal.valueOf(Long.parseLong(accountDetailsDto.getBalance())));
+        bankRecord.setInformation(accountDetailsDto.getPurpose());
+        bankRecord.setPostscript(accountDetailsDto.getPostscript());
+        bankRecord.setVouchertype(accountDetailsDto.getCert_type());
+        bankRecord.setEnterpriseNumber(accountDetailsDto.getCert_type());
+        bankRecord.setNote1(accountDetailsDto.getReserved1());
+        bankRecord.setNote2(accountDetailsDto.getReserved2());
+//        bankRecord.setNote3()
+//        bankRecord.setIsVerify();
+        return bankRecord;
+    }
+
     public static void main(String[] args) {
         AccountDetails details = new AccountDetails("账号", "币种", new Date(System.currentTimeMillis()), new Date(System.currentTimeMillis()));
         System.out.println(accountDetailsToXml(details));
@@ -120,7 +146,9 @@ public class BankParam {
                 "<file_name></file_name>\n" +
                 "</body>\n" +
                 "</ap>\n";
-        System.out.println(stringToObj(accountXml));
+        AccountDetailsDto accountDetailsDto = stringToObj(accountXml);
+
+        System.out.println(accountDetailsDto);
     }
 
 }

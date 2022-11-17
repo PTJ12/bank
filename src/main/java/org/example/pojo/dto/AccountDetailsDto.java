@@ -3,6 +3,7 @@ package org.example.pojo.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.ToString;
+import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.Date;
  * @Date 2022/11/16 16:00
  */
 @Data
+@Accessors(chain = true)
 @ToString
 public class AccountDetailsDto implements Serializable {
     //平台流水号（C20）
